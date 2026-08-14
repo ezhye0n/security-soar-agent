@@ -1,0 +1,15 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowKinesisPut",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:PutRecord",
+        "kinesis:PutRecords",
+        "kinesis:DescribeStreamSummary"
+      ],
+      "Resource": "arn:aws:kinesis:*:*:stream/soar-agent-log-stream"
+    }
+  ]
+}

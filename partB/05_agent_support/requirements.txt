@@ -1,0 +1,10 @@
+# Bedrock AgentCore 에이전트(agent.py) 배포용 의존성
+# `agentcore configure --requirements-file requirements.txt ...` 로 지정합니다.
+# 정확한 최신 버전은 배포 직전에 `pip index versions <패키지명>` 으로 확인 후 고정하세요.
+
+bedrock-agentcore
+bedrock-agentcore-starter-toolkit
+strands-agents
+boto3>=1.34.0
+requests
+python-dotenv

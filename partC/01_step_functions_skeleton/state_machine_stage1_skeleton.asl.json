@@ -1,0 +1,82 @@
+{
+  "Comment": "SOAR Orchestrator - Stage 1: 골격만 (모든 상태 Pass, 외부 의존성 없음)",
+  "StartAt": "CheckThreatLog",
+  "States": {
+    "CheckThreatLog": {
+      "Type": "Pass",
+      "Comment": "TODO(5:00-6:30): 05_call_agent_lambda 에서 실제 Agent 호출 Lambda로 교체",
+      "Result": {
+        "verdict": {
+          "ip": "203.0.113.77",
+          "score": 92,
+          "level": "HIGH",
+          "reason": "(skeleton stub) 아직 실제 Agent를 호출하지 않음"
+        }
+      },
+      "ResultPath": "$.agentResult",
+      "Next": "ThreatLevelChoice"
+    },
+
+    "ThreatLevelChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.agentResult.verdict.level",
+          "StringEquals": "HIGH",
+          "Next": "NotifyApprover"
+        }
+      ],
+      "Default": "NoActionNeeded"
+    },
+
+    "NotifyApprover": {
+      "Type": "Pass",
+      "Comment": "TODO(1:00-3:00): 02_sns_sqs 에서 실제 SNS Publish로 교체",
+      "Next": "WaitForApproval"
+    },
+
+    "WaitForApproval": {
+      "Type": "Pass",
+      "Comment": "TODO(3:00-5:00): 04_approval_processor 에서 실제 SQS waitForTaskToken으로 교체. 지금은 항상 승인된 것으로 취급.",
+      "Result": { "decision": "APPROVE" },
+      "ResultPath": "$.approval",
+      "Next": "ApprovalChoice"
+    },
+
+    "ApprovalChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.approval.decision",
+          "StringEquals": "APPROVE",
+          "Next": "BlockIP"
+        }
+      ],
+      "Default": "RecordRejected"
+    },
+
+    "BlockIP": {
+      "Type": "Pass",
+      "Comment": "TODO(5:00-6:30 이후): 파트B의 실제 blockIP Lambda 호출로 교체",
+      "Next": "NotifyCompletionApproved"
+    },
+
+    "NotifyCompletionApproved": {
+      "Type": "Pass",
+      "Result": "(skeleton) 차단 완료 알림 - 아직 실제 SNS 미연동",
+      "End": true
+    },
+
+    "RecordRejected": {
+      "Type": "Pass",
+      "Result": "(skeleton) 거부/타임아웃 알림 - 아직 실제 SNS 미연동",
+      "End": true
+    },
+
+    "NoActionNeeded": {
+      "Type": "Pass",
+      "Result": "위협도가 HIGH가 아니어서 별도 조치 없음",
+      "End": true
+    }
+  }
+}

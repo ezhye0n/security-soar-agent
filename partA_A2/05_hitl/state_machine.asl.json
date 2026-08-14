@@ -1,0 +1,58 @@
+{
+  "Comment": "Security SOAR Agent - Human-in-the-Loop 승인 플로우 (HIGH 위협 탐지 -> 사람 승인 -> blockIP 실행)",
+  "StartAt": "NotifyAndWaitForApproval",
+  "States": {
+    "NotifyAndWaitForApproval": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke.waitForTaskToken",
+      "Parameters": {
+        "FunctionName": "__NOTIFY_FUNCTION_ARN__",
+        "Payload": {
+          "input.$": "$",
+          "taskToken.$": "$$.Task.Token"
+        }
+      },
+      "TimeoutSeconds": 3600,
+      "Catch": [
+        {
+          "ErrorEquals": ["States.Timeout"],
+          "ResultPath": "$.error",
+          "Next": "ApprovalTimedOut"
+        }
+      ],
+      "Next": "IsApproved"
+    },
+    "IsApproved": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.decision",
+          "StringEquals": "approve",
+          "Next": "BlockIP"
+        }
+      ],
+      "Default": "ApprovalRejected"
+    },
+    "BlockIP": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "__BLOCK_IP_FUNCTION_ARN__",
+        "Payload": {
+          "ip_address.$": "$.ip"
+        }
+      },
+      "End": true
+    },
+    "ApprovalRejected": {
+      "Type": "Pass",
+      "Result": {"outcome": "REJECTED", "message": "담당자가 차단을 거부했습니다."},
+      "End": true
+    },
+    "ApprovalTimedOut": {
+      "Type": "Pass",
+      "Result": {"outcome": "TIMED_OUT", "message": "1시간 내 응답이 없어 자동 만료되었습니다."},
+      "End": true
+    }
+  }
+}

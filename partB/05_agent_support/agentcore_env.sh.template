@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# 파트A의 agent.py / agentcore CLI가 사용할 환경변수 템플릿
+# 사용법: cp agentcore_env.sh.template agentcore_env.sh 후 값 채우고 source
+#         (agentcore_env.sh 는 실제 시크릿이 들어가므로 git에 커밋하지 마세요)
+
+# --- AWS ---
+export AWS_REGION="us-west-2"
+
+# --- Cognito (04_cognito/cognito_output.env 참고) ---
+export COGNITO_TOKEN_ENDPOINT="https://<domain>.auth.us-west-2.amazoncognito.com/oauth2/token"
+export COGNITO_CLIENT_ID="<client-id>"
+export COGNITO_CLIENT_SECRET="<client-secret>"
+export COGNITO_SCOPE="soar-gateway/invoke"
+
+# --- AgentCore Gateway (파트A가 생성 후 채움) ---
+export GATEWAY_URL="<gateway-mcp-url>"
+export GATEWAY_ARN="<gateway-arn>"
+
+# --- 파트B 인프라 (참조용 - checkIPReputation/blockIP Lambda가 사용) ---
+export KINESIS_STREAM_NAME="soar-agent-log-stream"
+export S3_BUCKET_NAME="soar-agent-threat-scores-<account-id>"
+export DDB_BLOCKLIST_TABLE="soar-agent-blocklist"
+
+# --- 배포된 Agent Runtime (agentcore deploy 후 채움) ---
+export AGENT_RUNTIME_NAME="soar-security-agent"

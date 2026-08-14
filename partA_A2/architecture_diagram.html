@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: #0d0d0d;
+    font-family: -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+  }
+  .canvas {
+    position: relative;
+    width: 1900px;
+    height: 800px;
+    background: #0d0d0d;
+  }
+  .title-bar {
+    position: absolute; top: 24px; left: 60px; right: 60px;
+    color: #ffffff; font-size: 28px; font-weight: 700;
+  }
+  .title-bar .sub { color: #898781; font-size: 14px; font-weight: 400; margin-top: 4px; }
+
+  .lane-label {
+    position: absolute; font-size: 13px; font-weight: 700; letter-spacing: .04em;
+    color: #898781; text-transform: uppercase; z-index: 5;
+  }
+
+  .box {
+    position: absolute; border-radius: 12px; background: #161615;
+    border: 2px solid #3987e5; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 6px 10px; color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    z-index: 10;
+  }
+  .box .icon { font-size: 18px; margin-bottom: 2px; }
+  .box .t { font-size: 14.5px; font-weight: 700; line-height: 1.3; white-space: pre-line; }
+  .box .s { font-size: 11px; color: #b9b8b0; margin-top: 3px; line-height: 1.3; white-space: pre-line; }
+
+  .box.blue   { border-color: #3987e5; }
+  .box.amber  { border-color: #fab219; }
+  .box.green  { border-color: #0ca30c; }
+  .box.red    { border-color: #d03b3b; }
+  .box.purple { border-color: #a855f7; }
+
+  .edge-label {
+    position: absolute; font-size: 11px; font-weight: 600;
+    padding: 1px 6px; border-radius: 4px; z-index: 4; white-space: nowrap;
+  }
+  .edge-label.gray  { color: #9a9a97; }
+  .edge-label.red   { color: #ef6b6b; }
+  .edge-label.amber { color: #fbc463; }
+  .edge-label.purple{ color: #c7a6f7; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="title-bar">
+    Security SOAR Agent — 전체 시스템 아키텍처
+    <div class="sub">실시간 탐지 → AI 분석 → Human-in-the-Loop 승인 → 자동 차단 → 실시간 시각화</div>
+  </div>
+
+  <div class="lane-label" style="top:115px; left:60px; color:#3987e5;">① 실시간 수집 &amp; 탐지</div>
+  <div class="lane-label" style="top:275px; left:60px; color:#fab219;">② 상태 저장</div>
+  <div class="lane-label" style="top:400px; left:60px; color:#0ca30c;">③ Human-in-the-Loop 승인 &amp; 대응</div>
+  <div class="lane-label" style="top:618px; left:60px; color:#a855f7;">④ 시각화 &amp; AI 분석</div>
+
+  <!-- ===================== SVG ARROWS ===================== -->
+  <svg width="1900" height="800" style="position:absolute; top:0; left:0; z-index:1;">
+    <defs>
+      <marker id="arrow-gray" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#6b6b68" />
+      </marker>
+      <marker id="arrow-blue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#3987e5" />
+      </marker>
+      <marker id="arrow-green" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#0ca30c" />
+      </marker>
+      <marker id="arrow-red" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#ef6b6b" />
+      </marker>
+      <marker id="arrow-amber" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#fbc463" />
+      </marker>
+      <marker id="arrow-purple" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#a855f7" />
+      </marker>
+    </defs>
+
+    <!-- lane 1 chain (y center = 175) -->
+    <line x1="260" y1="175" x2="318" y2="175" stroke="#6b6b68" stroke-width="2.5" marker-end="url(#arrow-gray)" />
+    <line x1="520" y1="175" x2="578" y2="175" stroke="#6b6b68" stroke-width="2.5" marker-end="url(#arrow-gray)" />
+    <line x1="780" y1="175" x2="838" y2="175" stroke="#6b6b68" stroke-width="2.5" marker-end="url(#arrow-gray)" />
+
+    <!-- consumer -> storage (straight, centers aligned at x=970) -->
+    <line x1="970" y1="210" x2="970" y2="298" stroke="#3987e5" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+
+    <!-- storage -> filter -->
+    <line x1="920" y1="375" x2="680" y2="428" stroke="#0ca30c" stroke-width="2.5" marker-end="url(#arrow-green)" />
+
+    <!-- lane3 horizontal chain (y center = 465) -->
+    <line x1="760" y1="465" x2="793" y2="465" stroke="#0ca30c" stroke-width="2.5" marker-end="url(#arrow-green)" />
+    <line x1="995" y1="465" x2="1028" y2="465" stroke="#0ca30c" stroke-width="2.5" marker-end="url(#arrow-green)" />
+    <line x1="1230" y1="465" x2="1263" y2="465" stroke="#0ca30c" stroke-width="2.5" marker-end="url(#arrow-green)" />
+    <line x1="1465" y1="465" x2="1498" y2="465" stroke="#ef6b6b" stroke-width="2.5" marker-end="url(#arrow-red)" />
+
+    <!-- blockip -> storage (record BLOCKED), routed below lane3 -->
+    <polyline points="1600,500 1600,560 850,560 850,375"
+              fill="none" stroke="#fbc463" stroke-width="2.5" marker-end="url(#arrow-amber)" />
+
+    <!-- storage -> dashboard, routed left of lane3 -->
+    <polyline points="930,375 930,410 500,410 500,620 760,620 760,648"
+              fill="none" stroke="#3987e5" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+
+    <!-- dashboard -> ai agent -->
+    <line x1="900" y1="692" x2="968" y2="692" stroke="#a855f7" stroke-width="2.5" marker-end="url(#arrow-purple)" />
+  </svg>
+
+  <!-- ===================== EDGE LABELS ===================== -->
+  <div class="edge-label red"    style="top:512px; left:1440px;">승인(approve)</div>
+  <div class="edge-label amber"  style="top:540px; left:1150px;">차단 완료 기록 (BLOCKED)</div>
+  <div class="edge-label gray"   style="top:600px; left:410px;">저장소 읽기<br>(4초 폴링)</div>
+  <div class="edge-label purple" style="top:668px; left:900px;">AI 분석<br>버튼 클릭</div>
+
+  <!-- ===================== BOXES ===================== -->
+
+  <!-- Lane 1 -->
+  <div class="box blue" style="left:60px; top:140px; width:200px; height:70px;">
+    <div class="t">CTU-13
+Botnet Dataset</div>
+  </div>
+  <div class="box blue" style="left:320px; top:140px; width:200px; height:70px;">
+    <div class="t">Producer Lambda</div>
+    <div class="s">실시간 트래픽 재생</div>
+  </div>
+  <div class="box blue" style="left:580px; top:140px; width:200px; height:70px;">
+    <div class="t">Kinesis
+Data Stream</div>
+  </div>
+  <div class="box blue" style="left:840px; top:140px; width:260px; height:70px;">
+    <div class="t">Consumer Lambda</div>
+    <div class="s">5분 Sliding Window
+위협 점수 계산</div>
+  </div>
+
+  <!-- Lane 2 -->
+  <div class="box amber" style="left:800px; top:300px; width:340px; height:75px;">
+    <div class="t">DynamoDB + S3</div>
+    <div class="s">카운터/상태(STATE, BLOCKED) · 판정 스냅샷(JSON)</div>
+  </div>
+
+  <!-- Lane 3 -->
+  <div class="box green" style="left:560px; top:430px; width:200px; height:70px;">
+    <div class="t">Filter Trigger
+Lambda</div>
+    <div class="s">동일 IP 중복 방지</div>
+  </div>
+  <div class="box green" style="left:795px; top:430px; width:200px; height:70px;">
+    <div class="t">Step Functions</div>
+    <div class="s">승인 대기
+(최대 1시간)</div>
+  </div>
+  <div class="box green" style="left:1030px; top:430px; width:200px; height:70px;">
+    <div class="t">Notify Lambda</div>
+    <div class="s">→ SNS 이메일 발송</div>
+  </div>
+  <div class="box red" style="left:1265px; top:425px; width:200px; height:80px;">
+    <div class="icon">🧑</div>
+    <div class="t">담당자 승인/거부</div>
+  </div>
+  <div class="box green" style="left:1500px; top:430px; width:200px; height:70px;">
+    <div class="t">BlockIP Lambda</div>
+    <div class="s">승인 시에만 실행</div>
+  </div>
+
+  <!-- Lane 4 -->
+  <div class="box blue" style="left:620px; top:650px; width:280px; height:85px;">
+    <div class="icon">📊</div>
+    <div class="t">실시간 Dashboard</div>
+    <div class="s">DynamoDB/S3 읽기 전용</div>
+  </div>
+  <div class="box purple" style="left:970px; top:650px; width:320px; height:85px;">
+    <div class="icon">🤖</div>
+    <div class="t">Bedrock AgentCore</div>
+    <div class="s">Strands Agent + MCP → checkIPReputation 도구</div>
+  </div>
+
+</div>
+</body>
+</html>

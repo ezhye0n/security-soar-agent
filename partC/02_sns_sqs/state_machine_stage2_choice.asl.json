@@ -1,0 +1,100 @@
+{
+  "Comment": "SOAR Orchestrator - Stage 2: Choice 분기 + 실제 SNS 연동 (Agent/SQS/BlockIP는 아직 Pass)",
+  "StartAt": "CheckThreatLog",
+  "States": {
+    "CheckThreatLog": {
+      "Type": "Pass",
+      "Comment": "TODO(5:00-6:30): 05_call_agent_lambda 에서 실제 Agent 호출 Lambda로 교체",
+      "Result": {
+        "verdict": {
+          "ip": "203.0.113.77",
+          "score": 92,
+          "level": "HIGH",
+          "reason": "(stage2 stub) 아직 실제 Agent를 호출하지 않음"
+        }
+      },
+      "ResultPath": "$.agentResult",
+      "Next": "ThreatLevelChoice"
+    },
+
+    "ThreatLevelChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.agentResult.verdict.level",
+          "StringEquals": "HIGH",
+          "Next": "NotifyApprover"
+        }
+      ],
+      "Default": "NoActionNeeded"
+    },
+
+    "NotifyApprover": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${SnsApprovalTopicArn}",
+        "Subject": "[SOAR] HIGH 위협 탐지 - 승인 필요 (테스트)",
+        "Message.$": "States.Format('IP {} 가 위협도 HIGH(점수 {})로 판단되었습니다. requestId={}. 사유: {}', $.agentResult.verdict.ip, $.agentResult.verdict.score, $$.Execution.Name, $.agentResult.verdict.reason)"
+      },
+      "ResultPath": null,
+      "Next": "WaitForApproval"
+    },
+
+    "WaitForApproval": {
+      "Type": "Pass",
+      "Comment": "TODO(3:00-5:00): 04_approval_processor 에서 실제 SQS waitForTaskToken으로 교체. 지금은 항상 승인된 것으로 취급.",
+      "Result": { "decision": "APPROVE" },
+      "ResultPath": "$.approval",
+      "Next": "ApprovalChoice"
+    },
+
+    "ApprovalChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.approval.decision",
+          "StringEquals": "APPROVE",
+          "Next": "BlockIP"
+        }
+      ],
+      "Default": "RecordRejected"
+    },
+
+    "BlockIP": {
+      "Type": "Pass",
+      "Comment": "TODO(5:00-6:30 이후): 파트B의 실제 blockIP Lambda 호출로 교체",
+      "Next": "NotifyCompletionApproved"
+    },
+
+    "NotifyCompletionApproved": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${SnsCompletionTopicArn}",
+        "Subject": "[SOAR] 차단 완료 (테스트)",
+        "Message.$": "States.Format('IP {} 가 승인 후 차단 처리되었습니다(테스트, BlockIP는 아직 Pass). requestId={}', $.agentResult.verdict.ip, $$.Execution.Name)"
+      },
+      "ResultPath": null,
+      "End": true
+    },
+
+    "RecordRejected": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${SnsCompletionTopicArn}",
+        "Subject": "[SOAR] 차단 미승인/타임아웃 (테스트)",
+        "Message.$": "States.Format('IP {} 에 대한 차단 요청이 거부되었습니다. requestId={}', $.agentResult.verdict.ip, $$.Execution.Name)"
+      },
+      "ResultPath": null,
+      "End": true
+    },
+
+    "NoActionNeeded": {
+      "Type": "Pass",
+      "Result": "위협도가 HIGH가 아니어서 별도 조치 없음",
+      "End": true
+    }
+  }
+}

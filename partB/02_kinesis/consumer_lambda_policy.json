@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowKinesisRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:GetRecords",
+        "kinesis:GetShardIterator",
+        "kinesis:DescribeStream",
+        "kinesis:DescribeStreamSummary",
+        "kinesis:ListShards",
+        "kinesis:ListStreams"
+      ],
+      "Resource": "arn:aws:kinesis:*:*:stream/soar-agent-log-stream"
+    },
+    {
+      "Sid": "AllowS3Write",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::<S3_BUCKET_NAME>/*"
+    }
+  ]
+}

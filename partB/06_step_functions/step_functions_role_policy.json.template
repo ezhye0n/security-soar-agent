@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "InvokeLambdas",
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "${CallAgentLambdaArn}",
+        "${BlockIpLambdaArn}"
+      ]
+    },
+    {
+      "Sid": "PublishSns",
+      "Effect": "Allow",
+      "Action": "sns:Publish",
+      "Resource": [
+        "${SnsApprovalTopicArn}",
+        "${SnsCompletionTopicArn}"
+      ]
+    },
+    {
+      "Sid": "SendSqs",
+      "Effect": "Allow",
+      "Action": "sqs:SendMessage",
+      "Resource": "${SqsApprovalQueueArn}"
+    }
+  ]
+}

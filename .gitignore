@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Env / secrets — never commit real credentials
+.env
+*.env
+**/agentcore_env.sh
+*credentials*
+*.pem
+*.key
+
+# OS/editor
+.DS_Store
+.vscode/
+
+# Local test artifacts
+response.json
+*.zip
