@@ -3,7 +3,18 @@
 실시간 위협 탐지 → AI 기반 분석 → Human-in-the-Loop 승인 → 자동 차단까지 이어지는
 AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프라인입니다.
 
+> ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.** 이 프로젝트는 정해진 해커톤 기간 동안
+> 빠르게 기획·구현·검증까지 진행한 결과물입니다. 그래서 프로덕션 수준의 완성도보다는
+> "핵심 아이디어(설명 가능한 탐지 + Human-in-the-Loop + AI 분석)가 실제로 동작하는가"를
+> 증명하는 데 집중했고, 코드 곳곳에 다듬어지지 않은 부분이나 임시방편으로 우회한 구간이
+> 남아 있습니다(자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
+
 ![아키텍처](partA_A2/architecture_diagram.png)
+
+## 발표 자료
+
+- 📑 [발표 슬라이드 (Canva)](https://www.canva.com/design/DAHSJjueHX4/f4-Ip0-lRb488WPh7s_vIw/edit)
+- 📝 [발표 대본](partA_A2/demo_script.md)
 
 ## 왜 만들었나
 
@@ -21,6 +32,19 @@ CTU-13 봇넷 트래픽 데이터셋을 Kinesis로 스트리밍 → Consumer Lam
 승인을 대기(waitForTaskToken) → SNS로 승인 요청 이메일 발송 → 승인 시 BlockIP Lambda가
 실제 차단을 실행하고 결과를 다시 기록 → 대시보드가 이 모든 과정을 실시간으로 시각화하며,
 Bedrock AgentCore 기반 AI 에이전트가 온디맨드로 심층 판단 근거를 제공합니다.
+
+## 테스트 화면 및 영상
+
+**HIGH 등급 탐지 — 판정 근거 자동 표시**
+
+![HIGH 탐지 화면](assets/screenshots/dashboard_high.png)
+
+**MEDIUM 등급 + AI 분석 버튼**
+
+![MEDIUM 탐지 화면과 AI 분석 버튼](assets/screenshots/dashboard_medium_ai_analysis.png)
+
+**데모 영상**: (링크 추가 예정 — 녹화한 시연 영상을 유튜브(비공개/일부공개)나 구글 드라이브에
+업로드한 뒤, 이 자리에 링크를 넣어주세요. 예: `[데모 영상 보기](영상-URL)`)
 
 ## 폴더 구조
 
@@ -46,8 +70,16 @@ Bedrock AgentCore 기반 AI 에이전트가 온디맨드로 심층 판단 근거
 
 ## 참고 자료
 
-- [발표 대본](partA_A2/demo_script.md)
 - [느낀 점 및 경험한 성과](partA_A2/reflection.md)
+
+## 한계 및 향후 개선 방향
+
+짧은 해커톤 기간 안에 만들다 보니 명확한 한계가 있습니다. 검증은 CTU-13 단일 데이터셋으로만
+진행했고, AI 에이전트 호출도 자동이 아닌 수동 버튼 방식입니다. 또한 이번 AWS 환경(계정 차원의
+공개 Lambda 호출 제약)에 맞춰 대시보드를 인증된 세션에서 직접 서빙하는 방식(로컬 서버 +
+터널링)으로 우회했는데, 실제 운영 환경에서는 정식 공개 배포 구조(API Gateway + 적절한 인증,
+또는 별도 계정)로 바꿔야 합니다. 앞으로는 다양한 공격 유형 데이터로 검증 범위를 넓히고, 승인
+채널도 이메일 외에 Slack 등으로 확장할 계획입니다.
 
 ## 보안 유의사항
 
