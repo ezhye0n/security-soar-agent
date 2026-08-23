@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/8905c171-9710-444c-afd7-9ba3243b2b5f
 # Security SOAR Agent (team soara)
 
 실시간 위협 탐지 → AI 기반 분석 → Human-in-the-Loop 승인 → 자동 차단까지 이어지는
@@ -9,12 +11,12 @@ AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프
 > 증명하는 데 집중했고, 코드 곳곳에 다듬어지지 않은 부분이나 임시방편으로 우회한 구간이
 > 남아 있습니다(자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
 
-![아키텍처](partA_A2/architecture_diagram.png)
+![아키텍처](partA/architecture_diagram.png)
 
 ## 발표 자료
 
 - 📑 [발표 슬라이드 (Canva)](https://www.canva.com/design/DAHSJjueHX4/f4-Ip0-lRb488WPh7s_vIw/edit)
-- 📝 [발표 대본](partA_A2/demo_script.md)
+- 📝 [발표 대본](partA/demo_script.md)
 
 ## 왜 만들었나
 
@@ -39,12 +41,24 @@ Bedrock AgentCore 기반 AI 에이전트가 온디맨드로 심층 판단 근거
 
 ![HIGH 탐지 화면](assets/screenshots/dashboard_high.png)
 
-**MEDIUM 등급 + AI 분석 버튼**
+**MEDIUM 등급 탐지**
 
-![MEDIUM 탐지 화면과 AI 분석 버튼](assets/screenshots/dashboard_medium_ai_analysis.png)
+![MEDIUM 탐지 화면](assets/screenshots/dashboard_medium_ai_analysis.png)
 
-**데모 영상**: (링크 추가 예정 — 녹화한 시연 영상을 유튜브(비공개/일부공개)나 구글 드라이브에
-업로드한 뒤, 이 자리에 링크를 넣어주세요. 예: `[데모 영상 보기](영상-URL)`)
+**AI 분석 버튼**   
+
+https://github.com/user-attachments/assets/2860c5ce-5a49-4dba-94d1-ae3faee3a985
+
+
+
+**데모 영상**  
+
+
+https://github.com/user-attachments/assets/71757686-1258-4015-ae79-60684ae14291
+
+
+
+
 
 ## 폴더 구조
 
