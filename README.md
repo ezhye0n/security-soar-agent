@@ -1,5 +1,4 @@
 
-https://github.com/user-attachments/assets/8905c171-9710-444c-afd7-9ba3243b2b5f
 # Security SOAR Agent (team soara)
 
 실시간 위협 탐지 → AI 기반 분석 → Human-in-the-Loop 승인 → 자동 차단까지 이어지는
@@ -8,8 +7,7 @@ AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프
 > ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.** 이 프로젝트는 정해진 해커톤 기간 동안
 > 빠르게 기획·구현·검증까지 진행한 결과물입니다. 그래서 프로덕션 수준의 완성도보다는
 > "핵심 아이디어(설명 가능한 탐지 + Human-in-the-Loop + AI 분석)가 실제로 동작하는가"를
-> 증명하는 데 집중했고, 코드 곳곳에 다듬어지지 않은 부분이나 임시방편으로 우회한 구간이
-> 남아 있습니다(자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
+> 증명하는 데 집중했습니다(자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
 
 ![아키텍처](partA/architecture_diagram.png)
 
