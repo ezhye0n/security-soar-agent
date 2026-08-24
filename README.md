@@ -4,17 +4,13 @@
 실시간 위협 탐지 → AI 기반 분석 → Human-in-the-Loop 승인 → 자동 차단까지 이어지는
 AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프라인입니다.
 
-> ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.** 이 프로젝트는 정해진 해커톤 기간 동안
-> 빠르게 기획·구현·검증까지 진행한 결과물입니다. 그래서 프로덕션 수준의 완성도보다는
+> ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.**  이 프로젝트는 AWS AI 서비스 심화 교육과정의
+5일차 팀 프로젝트로 시작되어, 하루 동안 빠르게 기획·구현·검증까지 진행한 결과물입니다.
+>  그래서 프로덕션 수준의 완성도보다는
 > "핵심 아이디어(설명 가능한 탐지 + Human-in-the-Loop + AI 분석)가 실제로 동작하는가"를
-> 증명하는 데 집중했습니다(자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
+> 증명하는 데 집중했습니다. (자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
 
 ![아키텍처](partA/architecture_diagram.png)
-
-## 발표 자료
-
-- 📑 [발표 슬라이드 (Canva)](https://www.canva.com/design/DAHSJjueHX4/f4-Ip0-lRb488WPh7s_vIw/edit)
-- 📝 [발표 대본](partA/demo_script.md)
 
 ## 왜 만들었나
 
@@ -80,9 +76,6 @@ https://github.com/user-attachments/assets/71757686-1258-4015-ae79-60684ae14291
 | Dashboard | DynamoDB/S3를 읽기 전용으로 폴링하는 실시간 대시보드 |
 | Bedrock AgentCore (Strands Agent + MCP) | 온디맨드 호출 시 위협 조회 도구를 사용해 자연어 판단 근거 제공. 절대 스스로 차단을 실행하지 않음 |
 
-## 참고 자료
-
-- [느낀 점 및 경험한 성과](partA_A2/reflection.md)
 
 ## 한계 및 향후 개선 방향
 
@@ -98,4 +91,13 @@ https://github.com/user-attachments/assets/71757686-1258-4015-ae79-60684ae14291
 이 저장소의 스크립트는 특정 AWS 계정/리전(ap-northeast-2)을 기준으로 작성되었습니다.
 실제 자격 증명(Access Key, Client Secret 등)은 코드에 하드코딩되어 있지 않고 전부
 환경 변수로 주입하도록 되어 있습니다. 이 저장소를 포크/재사용할 경우 각자의 AWS
-계정 정보로 교체해서 사용하세요.
+계정 정보로 교체해서 사용해주세요.
+
+## 발표 자료
+
+- 📑 [발표 슬라이드 (Canva)](https://www.canva.com/design/DAHSJjueHX4/f4-Ip0-lRb488WPh7s_vIw/edit)
+- 📝 [발표 대본](partA/demo_script.md)
+- 
+## 참고 자료
+
+- [느낀 점 및 경험한 성과](partA_A2/reflection.md)
