@@ -113,4 +113,4 @@ https://github.com/user-attachments/assets/71757686-1258-4015-ae79-60684ae14291
 - 
 ## 참고 자료
 
-- [느낀 점 및 경험한 성과](partA_A2/reflection.md)
+- [느낀 점 및 경험한 성과](partA/reflection.md)
