@@ -2,10 +2,23 @@
 # Security SOAR Agent (team soara)
 
 실시간 위협 탐지 → AI 기반 분석 → Human-in-the-Loop 승인 → 자동 차단까지 이어지는
-AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프라인입니다.
+AWS 서버리스 SOAR(Security Orchestration, Automation and Response) 파이프라인.
 
-> ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.**  이 프로젝트는 AWS AI 서비스 심화 교육과정의
-5일차 팀 프로젝트로 시작되어, 하루 동안 빠르게 기획·구현·검증까지 진행한 결과물입니다.
+
+
+> ⏱️ **해커톤 단기간 프로젝트임을 밝힙니다.**  이 프로젝트는 AWS AI 서비스 심화 교육과정 (3단계)의
+5일차에 팀 프로젝트로 시작되어, 하루 동안 빠르게 기획·구현·검증까지 진행한 결과물입니다. 
+
+
+- 1일차 Lambda+Kinesis 실시간 수집·전처리,  
+
+- 2일차 SageMaker Canvas 시계열 예측 및 Bedrock 이상 탐지, 
+
+- 3일차 Bedrock Agents·MCP 기반 멀티스텝 에이전트, 
+
+- 4일차 Bedrock Knowledge Bases RAG Q&A 웹앱과 Step Functions Human-in-the-Loop 워크플로우, 팀 프로젝트 기획·구현
+
+
 >  그래서 프로덕션 수준의 완성도보다는
 > "핵심 아이디어(설명 가능한 탐지 + Human-in-the-Loop + AI 분석)가 실제로 동작하는가"를
 > 증명하는 데 집중했습니다. (자세한 내용은 하단 [한계 및 향후 개선 방향](#한계-및-향후-개선-방향) 참고).
